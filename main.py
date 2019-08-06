@@ -1,5 +1,6 @@
 from config import (
-    INSTRUCTION_VALIDATION_ERROR
+    INSTRUCTION_VALIDATION_ERROR,
+    CANVAS_HAS_NOT_BEEN_CREATED
 )
 from instructions import (
     Canvas as CanvasInstruction,
@@ -7,6 +8,7 @@ from instructions import (
     Rectangle,
     BucketFill
 )
+from canvas import Canvas
 
 AVAILABLE_INSTRUCTIONS = {
     'C': lambda args: CanvasInstruction.validate(args),
@@ -48,9 +50,23 @@ def raise_(e):
     return r
 
 
+def elephant(input_path, output_path):
+    instructions = read_instructions_from_file(input_path)
+    canvas = None
+    for instruction in instructions:
+        if type(instruction) == CanvasInstruction and canvas is None:
+            canvas = Canvas(instruction.width, instruction.height)
+            canvas.write_to_file(output_path)
+            continue
+        if canvas is None:
+            print(CANVAS_HAS_NOT_BEEN_CREATED.format(instruction))
+            continue
+        canvas.apply_instruction(instruction)
+        canvas.write_to_file(output_path)
+
+
 def main():
-    instructions = read_instructions_from_file('input.txt')
-    print(instructions)
+    elephant('test/inputs/input.txt', '')
 
 
 if __name__ == '__main__':
