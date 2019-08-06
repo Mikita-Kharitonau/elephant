@@ -16,3 +16,6 @@ class BucketFill(Instruction):
         for i in range(0, 2):
             numbers.append(int(args[i]))
         return BucketFill(numbers[0], numbers[1], args[2])
+
+    def __str__(self):
+        return "BucketFill({}, {}, {})".format(self.x, self.y, self.filling_character)

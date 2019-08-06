@@ -20,3 +20,6 @@ class Rectangle(Instruction):
         if not numbers[0] < numbers[2] or not numbers[1] < numbers[3]:
             raise ValueError
         return Rectangle(numbers[0], numbers[1], numbers[2], numbers[3])
+
+    def __str__(self):
+        return "Rectangle({}, {}, {}, {})".format(self.x1, self.y1, self.x2, self.y2)

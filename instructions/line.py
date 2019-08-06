@@ -19,3 +19,6 @@ class Line(Instruction):
             numbers.append(int(args[i]))
         return Line(numbers[0], numbers[1], numbers[2], numbers[3])
 
+    def __str__(self):
+        return "Line({}, {}, {}, {})".format(self.x1, self.y1, self.x2, self.y2)
+

@@ -1,7 +1,6 @@
 from config import (
     HORIZONTAL_BORDER,
     VERTICAL_BORDER,
-    LINE_DEFAULT_CHARACTER,
     CANT_PRINT_LINE,
     CANVAS_DEFAULT_CHARACTER
 )
@@ -59,15 +58,13 @@ class Canvas:
         if (line.x1 != line.x2 and line.y1 != line.y2) or \
                 self.check_for_out_of_range(line.x1, line.y1) or \
                 self.check_for_out_of_range(line.x2, line.y2):
-            # TODO: raise exception
-            print(CANT_PRINT_LINE.format(line))
-            return
+            raise Exception(CANT_PRINT_LINE.format(line))
         if line.x1 == line.x2:
             for i in range(line.y1, line.y2 + 1):
-                self.field[i][line.x1] = LINE_DEFAULT_CHARACTER
+                self.field[i][line.x1] = line.filling_character
         if line.y1 == line.y2:
             for i in range(line.x1, line.x2 + 1):
-                self.field[line.y1][i] = LINE_DEFAULT_CHARACTER
+                self.field[line.y1][i] = line.filling_character
 
     def print_rectangle(self, rectangle):
         self.print_line(Line(rectangle.x1, rectangle.y1, rectangle.x2, rectangle.y1))

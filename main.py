@@ -1,6 +1,10 @@
+import argparse
+
+from canvas import Canvas
 from config import (
     INSTRUCTION_VALIDATION_ERROR,
-    CANVAS_HAS_NOT_BEEN_CREATED
+    CANVAS_HAS_NOT_BEEN_CREATED,
+    FILE_NOT_EXISTS
 )
 from instructions import (
     Canvas as CanvasInstruction,
@@ -8,7 +12,6 @@ from instructions import (
     Rectangle,
     BucketFill
 )
-from canvas import Canvas
 
 AVAILABLE_INSTRUCTIONS = {
     'C': lambda args: CanvasInstruction.validate(args),
@@ -20,9 +23,12 @@ AVAILABLE_INSTRUCTIONS = {
 
 def read_instructions_from_file(path):
     instructions = []
-    with open(path, 'r') as f:
-        for line in f:
-            instructions.append(line.split())
+    try:
+        with open(path, 'r') as f:
+            for line in f:
+                instructions.append(line.split())
+    except FileNotFoundError:
+        print(FILE_NOT_EXISTS.format(path))
     validated_instructions = validate_instructions(instructions)
     return validated_instructions
 
@@ -45,7 +51,7 @@ def validate_instructions(instructions):
 
 
 def raise_(e):
-    def r():
+    def r(arg):
         raise e
     return r
 
@@ -61,12 +67,20 @@ def elephant(input_path, output_path):
         if canvas is None:
             print(CANVAS_HAS_NOT_BEEN_CREATED.format(instruction))
             continue
-        canvas.apply_instruction(instruction)
+        try:
+            canvas.apply_instruction(instruction)
+        except Exception as e:
+            print(str(e))
+            continue
         canvas.write_to_file(output_path)
 
 
 def main():
-    elephant('test/inputs/input.txt', '')
+    parser = argparse.ArgumentParser(description='Elephant application.')
+    parser.add_argument('input', help='Path to input file.')
+    parser.add_argument('output', help='Path to output file.')
+    args = parser.parse_args()
+    elephant(args.input, args.output)
 
 
 if __name__ == '__main__':

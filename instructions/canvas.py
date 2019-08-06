@@ -9,5 +9,11 @@ class Canvas:
             raise ValueError
         numbers = []
         for i in range(0, 2):
-            numbers.append(int(args[i]))
+            number = int(args[i])
+            if not number > 0:
+                raise ValueError
+            numbers.append(number)
         return Canvas(numbers[0], numbers[1])
+
+    def __str__(self):
+        return "CanvasInstruction({}, {})".format(self.width, self.height)
