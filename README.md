@@ -125,5 +125,5 @@ $ cd elephant
 $ python -m unittest discover test/ -v
 ```
 
-
+Please, fill free to write review to nikita.kharitonov99@gmail.com
 
